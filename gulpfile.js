@@ -32,7 +32,6 @@ const gulp                      = require('gulp'),
       concat                    = require('gulp-concat'),
       imagemin                  = require('gulp-imagemin'),
       browserSync               = require('browser-sync').create(),
-      pug                       = require('gulp-pug'),
       dependents                = require('gulp-dependents'),
 
       src_folder                = './src/',
@@ -51,17 +50,6 @@ gulp.task('html', () => {
     base: src_folder,
     since: gulp.lastRun('html')
   })
-    .pipe(gulp.dest(dist_folder))
-    .pipe(browserSync.stream());
-});
-
-gulp.task('pug', () => {
-  return gulp.src([ src_folder + 'pug/**/!(_)*.pug' ], {
-    base: src_folder + 'pug',
-    since: gulp.lastRun('pug')
-  })
-    .pipe(plumber())
-    .pipe(pug())
     .pipe(gulp.dest(dist_folder))
     .pipe(browserSync.stream());
 });
@@ -147,9 +135,9 @@ gulp.task('vendor', () => {
     .pipe(browserSync.stream());
 });
 
-gulp.task('build', gulp.series('clear', 'html', 'pug', 'sass', 'less', 'stylus', 'js', 'images', 'vendor'));
+gulp.task('build', gulp.series('clear', 'html', 'sass', 'less', 'stylus', 'js', 'images', 'vendor'));
 
-gulp.task('dev', gulp.series('html', 'pug', 'sass', 'less', 'stylus', 'js'));
+gulp.task('dev', gulp.series('html', 'sass', 'less', 'stylus', 'js'));
 
 gulp.task('serve', () => {
   return browserSync.init({
@@ -174,7 +162,6 @@ gulp.task('watch', () => {
 
   const watch = [
     src_folder + '**/*.html',
-    src_folder + 'pug/**/*.pug',
     src_assets_folder + 'sass/**/*.sass',
     src_assets_folder + 'scss/**/*.scss',
     src_assets_folder + 'less/**/*.less',
